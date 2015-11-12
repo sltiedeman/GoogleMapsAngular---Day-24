@@ -64,15 +64,49 @@ angular.module('myApp', []).controller('mapCtrl', function($scope){
 		var latLon = latLon.split(',');
 		var lat = Number(latLon[0]);
 		var lon = Number(latLon[1]);
-		console.log(lat);
-		console.log(lon);
 		$scope.map = new google.maps.Map(document.getElementById('map'), {
 			center: {lat: lat, lng: lon},
-			zoom: 15
+			zoom: 12
 		});
 
+		//Attempt to get golf courses
+		
+		var floristLocation = {lat:lat, lng:lon};
+
+		infowindow = new google.maps.InfoWindow();
+
+ 		 var service = new google.maps.places.PlacesService($scope.map);
+ 		 service.nearbySearch({
+ 		 	location: floristLocation,
+ 		 	radius: 20000,
+ 		 	types: ['florist']
+ 		 }, callback);
+ 	}
+
+ 	function callback(results, status) {
+  		if (status === google.maps.places.PlacesServiceStatus.OK) {
+ 		   for (var i = 0; i < results.length; i++) {
+   		   createMarker2(results[i]);
+ 	 	  	}
+ 		}
 	}
-			
+
+	function createMarker2(place) {
+	  var placeLoc = place.geometry.location;
+	  var marker = new google.maps.Marker({
+	    map: $scope.map,
+	    position: place.geometry.location
+	  });
+
+	  google.maps.event.addListener(marker, 'click', function() {
+	    infowindow.setContent(place.name);
+	    infowindow.open($scope.map, this);
+	  });
+	}
+ 		
+
+
+	
 
 	$scope.updateMarkers = function(){
 		for(i=0; i<$scope.markers.length; i++){
