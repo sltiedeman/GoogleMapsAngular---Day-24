@@ -12,18 +12,22 @@
   float: left;
   overflow: scroll;
   padding-top: 20px;
-  text-align: center;
 }
-/* line 14, ../compass/sass/style.scss */
+/* line 13, ../compass/sass/style.scss */
+#list-window #input {
+  padding-bottom: 20px;
+}
+/* line 16, ../compass/sass/style.scss */
 #list-window .city {
   padding-bottom: 10px;
 }
-/* line 16, ../compass/sass/style.scss */
+/* line 18, ../compass/sass/style.scss */
 #list-window .city button {
+  text-align: center;
   padding-left: 10px;
   padding-right: 10px;
 }
-/* line 19, ../compass/sass/style.scss */
+/* line 22, ../compass/sass/style.scss */
 #list-window .city button a {
   margin-left: 10px;
   margin-right: 10px;

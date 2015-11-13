@@ -91,15 +91,36 @@ angular.module('myApp', []).controller('mapCtrl', function($scope){
 	function createMarker2(place) {
 	  var placeLoc = place.geometry.location;
 	  console.log(place);
+	  var icon = place.icon;
 	  var marker = new google.maps.Marker({
 	    map: $scope.map,
-	    position: place.geometry.location
+	    position: place.geometry.location,
+	    icon: icon
 	  });
 
-	  google.maps.event.addListener(marker, 'click', function() {
-	    infowindow.setContent(place.name);
-	    infowindow.open($scope.map, this);
+	  //attempting to use the place id to pull data from the google maps object
+	  var placeId = place.place_id;
+	  var apiKey = 'AIzaSyC-2l77gW602XIxo5nXdfmrw8wNWLiv8KA';
+	  var placeUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid=" + placeId +'&key=' + apiKey;
+	  $.getJSON(placeUrl, function(data){
+	 		var placeObject = data.result;
+	 		console.log(placeObject);
+
 	  });
+
+
+		markerContentHTML = '<div class="infoWindowContent">';
+	    markerContentHTML += '<div class="land-area">Vicinity: '+ place.vicinity + '</div>';
+	    markerContentHTML += '</div>';
+
+	    marker.content = markerContentHTML;
+	    google.maps.event.addListener(marker, 'click', function(){
+	    	infoWindow.setContent('<h2>' + place.name + '</h2>' + marker.content);
+	    	infoWindow.open($scope.map, marker);
+	    })
+	    // $scope.markers.push(marker);
+
+
 	}
  		
 

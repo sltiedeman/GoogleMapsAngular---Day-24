@@ -10,10 +10,13 @@
 	float: left;
 	overflow: scroll;
 	padding-top: 20px;
-	text-align: center;
+	#input{
+		padding-bottom: 20px;
+	}
 	.city{
 		padding-bottom: 10px;
 		button{
+			text-align: center;
 			padding-left: 10px;
 			padding-right: 10px;
 			a{
