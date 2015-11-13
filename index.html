@@ -25,12 +25,14 @@
 			<input type="submit" value="Update Map">
 			<div class="city" ng-repeat="city in (filteredCities =  (cities | filter: searchString))">
 			  {{city.yearRank}}: {{city.city}}
+			  	<div>
 				  <button>
-				  	<a class="btn btn-primary sm" href="" ng-click="triggerClick(city.yearRank)">Show Info
+				  	<a class="btn btn-primary sm" href="" ng-click="triggerClick(city.yearRank)">Show Info</a>
 				  	<a class="btn btn-primary sm" href="" ng-click="triggerSearch(city.latLon)">
-				  	Find Florists
+				  	Find Campgrounds
 				  	</a>
 				  </button>
+				</div>
 			 </div>
 		 </form>
 	</div>

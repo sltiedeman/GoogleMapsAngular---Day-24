@@ -3,3 +3,23 @@
 	width: 75%;
 	float: left;
 }
+
+#list-window{
+	height: 99vh;
+	width: 25%;
+	float: left;
+	overflow: scroll;
+	padding-top: 20px;
+	text-align: center;
+	.city{
+		padding-bottom: 10px;
+		button{
+			padding-left: 10px;
+			padding-right: 10px;
+			a{
+				margin-left: 10px;
+				margin-right: 10px;
+			}
+		}
+	}
+}
