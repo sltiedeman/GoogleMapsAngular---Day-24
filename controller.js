@@ -68,15 +68,15 @@ angular.module('myApp', []).controller('mapCtrl', function($scope){
 
 		//Attempt to get golf courses
 		
-		var floristLocation = {lat:lat, lng:lon};
+		var campgroundLocation = {lat:lat, lng:lon};
 
 		infowindow = new google.maps.InfoWindow();
 
  		 var service = new google.maps.places.PlacesService($scope.map);
  		 service.nearbySearch({
- 		 	location: floristLocation,
+ 		 	location: campgroundLocation,
  		 	radius: 20000,
- 		 	types: ['florist']
+ 		 	types: ['campground']
  		 }, callback);
  	}
 
@@ -90,6 +90,7 @@ angular.module('myApp', []).controller('mapCtrl', function($scope){
 
 	function createMarker2(place) {
 	  var placeLoc = place.geometry.location;
+	  console.log(place);
 	  var marker = new google.maps.Marker({
 	    map: $scope.map,
 	    position: place.geometry.location
