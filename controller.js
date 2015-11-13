@@ -90,7 +90,6 @@ angular.module('myApp', []).controller('mapCtrl', function($scope){
 
 	function createMarker2(place) {
 	  var placeLoc = place.geometry.location;
-	  console.log(place);
 	  var icon = place.icon;
 	  var marker = new google.maps.Marker({
 	    map: $scope.map,
@@ -102,24 +101,39 @@ angular.module('myApp', []).controller('mapCtrl', function($scope){
 	  var placeId = place.place_id;
 	  var apiKey = 'AIzaSyC-2l77gW602XIxo5nXdfmrw8wNWLiv8KA';
 	  var placeUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid=" + placeId +'&key=' + apiKey;
-	  $.getJSON(placeUrl, function(data){
-	 		var placeObject = data.result;
-	 		console.log(placeObject);
+	 
+	  var request = {
+	  	placeId: placeId
+	  };
 
-	  });
 
-
-		markerContentHTML = '<div class="infoWindowContent">';
-	    markerContentHTML += '<div class="land-area">Vicinity: '+ place.vicinity + '</div>';
-	    markerContentHTML += '</div>';
-
-	    marker.content = markerContentHTML;
-	    google.maps.event.addListener(marker, 'click', function(){
-	    	infoWindow.setContent('<h2>' + place.name + '</h2>' + marker.content);
-	    	infoWindow.open($scope.map, marker);
-	    })
-	    // $scope.markers.push(marker);
-
+	  var markerContentHTML = '';
+	  service = new google.maps.places.PlacesService($scope.map);
+	  service.getDetails(request, callback);
+	  function callback(place, status) {
+  		if (status == google.maps.places.PlacesServiceStatus.OK) {
+  			console.log(place);
+  			markerContentHTML = '<div class="infoWindowContent">';
+  			if(place.formatted_address != undefined){	 	
+  				markerContentHTML += '<div class="address">Address: ' + place.formatted_address + '</div>';	
+  			}
+  			if(place.formatted_phone_number != undefined){	
+	    		markerContentHTML += '<div class="phone">Phone: ' + place.formatted_phone_number + '</div>';
+	    	}
+	    	if(place.rating != undefined){
+	    		markerContentHTML += '<div class="rating">Rating: ' + place.rating + '</div>';
+	    	}
+	    	if(place.website != undefined){
+	    		markerContentHTML += '<div class="website">Website: ' + place.website+ '</div>';
+	    	}
+	    	markerContentHTML += '</div>';
+	    	marker.content = markerContentHTML;
+	   		google.maps.event.addListener(marker, 'click', function(){
+	    		infoWindow.setContent('<h2>' + place.name + '</h2>' + marker.content);
+	    		infoWindow.open($scope.map, marker);
+	   		 })
+	     }
+	   }
 
 	}
  		
