@@ -57,10 +57,7 @@ angular.module('myApp', []).controller('mapCtrl', function($scope){
 		google.maps.event.trigger($scope.markers[i-1],"click");
 	}
 
-	$scope.triggerGolf = function(latLon){
-		for(i=0; i<$scope.markers.length; i++){
-			$scope.markers[i].setMap(null);
-		}
+	$scope.triggerSearch = function(latLon){
 		var latLon = latLon.split(',');
 		var lat = Number(latLon[0]);
 		var lon = Number(latLon[1]);
