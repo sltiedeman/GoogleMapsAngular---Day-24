@@ -1,3 +1,8 @@
+var searchCity = '';
+var currTemp = '';
+var weatherIcon = '';
+var iconHtml = '';
+
 //Angular App Module and Controller
 angular.module('myApp', []).controller('mapCtrl', function($scope){
 
@@ -57,7 +62,8 @@ angular.module('myApp', []).controller('mapCtrl', function($scope){
 		google.maps.event.trigger($scope.markers[i-1],"click");
 	}
 
-	$scope.triggerSearch = function(latLon){
+	$scope.triggerSearch = function(latLon, city){
+	 	searchCity = city;
 		var latLon = latLon.split(',');
 		var lat = Number(latLon[0]);
 		var lon = Number(latLon[1]);
@@ -106,6 +112,18 @@ angular.module('myApp', []).controller('mapCtrl', function($scope){
 	  	placeId: placeId
 	  };
 
+	  console.log(searchCity);
+	  var apiKey = 'eac2948bfca65b78a8c5564ecf91d00e';
+	  var baseUrl = "http://api.openweathermap.org/data/2.5/weather?q=";
+	  var endUrl = ',us&units=imperial&APPID='+apiKey;
+	  var weatherUrl = baseUrl + searchCity + endUrl;
+	  console.log(weatherUrl);
+	  //Get weather Object
+	  $.getJSON(weatherUrl, function(weatherData){
+	  	   currTemp = weatherData.main.temp;
+	  	   weatherIcon = weatherData.weather[0].icon;
+		   iconHtml= '<img src="http://openweathermap.org/img/w/' + weatherIcon + '.png">';
+	  });
 
 	  var markerContentHTML = '';
 	  service = new google.maps.places.PlacesService($scope.map);
@@ -118,14 +136,15 @@ angular.module('myApp', []).controller('mapCtrl', function($scope){
   				markerContentHTML += '<div class="address">Address: ' + place.formatted_address + '</div>';	
   			}
   			if(place.formatted_phone_number != undefined){	
-	    		markerContentHTML += '<div class="phone">Phone: ' + place.formatted_phone_number + '</div>';
+	    		markerContentHTML += '<div class="phone">Phone: ' + '<a href="tel:' + place.formatted_phone_number + '">' + place.formatted_phone_number + '</a>' + '</div>';
 	    	}
 	    	if(place.rating != undefined){
 	    		markerContentHTML += '<div class="rating">Rating: ' + place.rating + '</div>';
 	    	}
 	    	if(place.website != undefined){
-	    		markerContentHTML += '<div class="website">Website: ' + place.website+ '</div>';
+	    		markerContentHTML += '<div class="website">Website: ' + '<a href="' + place.website + '">' + place.website + '</a>' + '</div>';
 	    	}
+	    	markerContentHTML += '<div class="temp">Current Temp: ' + currTemp + '&#176' + iconHtml + '</div>';
 	    	markerContentHTML += '</div>';
 	    	marker.content = markerContentHTML;
 	   		google.maps.event.addListener(marker, 'click', function(){
